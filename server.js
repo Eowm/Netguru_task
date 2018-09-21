@@ -1,15 +1,15 @@
-var express = require('express');
-var app = express();
-var request = require('request-promise-native');
+const express = require('express');
+const app = express();
+const request = require('request-promise-native');
 
-var mongodb = require('mongodb');
-var MongoClient = mongodb.MongoClient;
-var MONGO_URL = 'mongodb://Netguru:netguru1@ds263642.mlab.com:63642/netguru_task';
+const mongodb = require('mongodb');
+const MongoClient = mongodb.MongoClient;
+const MONGO_URL = 'mongodb://Netguru:netguru1@ds263642.mlab.com:63642/netguru_task';
 
 const API_KEY = 'b83010ce';
 const URL = 'http://www.omdbapi.com/';
 
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({
     extended: true
@@ -19,9 +19,9 @@ let db;
 
 MongoClient.connect('mongodb://localhost:27017', (err, client) => {
     if (err) {
-        throw new Error() // <- do obsluzenia
+        throw new Error(); // <- do obsluzenia
     }
-    db = client.db('Movies')
+    db = client.db('Movies');
 });
 
 app.post('/movies', (req, res) => {
@@ -29,7 +29,7 @@ app.post('/movies', (req, res) => {
         throw new Error("no title given"); // Express will catch this on its own.
     }
     //usage of request-promise
-    var options = {
+    let options = {
         uri: URL,
         qs: {
             apikey: API_KEY,
@@ -58,8 +58,8 @@ app.post('/movies', (req, res) => {
         });
 });
 
-app.get('/movies', (req, res) => {
-    var mysort = {
+app.get('/movies', (req, res) => {      
+    const mysort = {
         Title: 1
     };
     db.collection('movies_collection').find().sort(mysort).toArray((err, result) => {
@@ -78,6 +78,7 @@ app.post('/comments', (req, res) => {
             $in: [req.body.title]
         }
     }).toArray((err, result) => {
+        if (err) throw err;
         if (result.length === 0) {
             console.log('There is no movie with this id');
         } else {
@@ -103,7 +104,7 @@ app.post('/comments', (req, res) => {
 })
 
 app.get('/comments', (req, res) => {
-    var mysort = {
+    const mysort = {
         Title: 1
     };
     db.collection('movies_collection').find({    comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {
