@@ -27,7 +27,7 @@ MongoClient.connect('mongodb://localhost:27017', (err, client) => {
 app.post('/movies', (req, res) => {
     console.log(req.body.title);
     if (!req.body.title) {
-        throw new Error("no title given"); // Express will catch this on its own. inaczej handlowac 
+        throw new Error("no title given"); // Express will catch this on its own.
     }
     //usage of request-promise
     var options = {
@@ -72,7 +72,7 @@ app.get('/movies', (req, res) => {
 
 app.post('/comments', (req, res) => {
     if (!req.body.comment || !req.body.title) {
-        throw new Error("an error ocured no comment or id"); // Express will catch this on its own. inaczej handlowac 
+        throw new Error("an error ocured no comment or id"); // Express will catch this on its own. 
     }
     db.collection('movies_collection').find({
         Title: {
@@ -98,7 +98,7 @@ app.post('/comments', (req, res) => {
                     $in: [req.body.title]
                 }}, { ...result[0] }
             );
-            db.collection('comments').insertOne({Title: req.body.title, comment: req.body.comment, date: Date.now()}); ///
+            db.collection('comments').insertOne({Title: req.body.title, comment: req.body.comment, date: Date.now()});
         }
     })
 })
@@ -107,7 +107,7 @@ app.get('/comments', (req, res) => {
     var mysort = {
         Title: 1
     };
-    db.collection('movies_collection').find({    comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {////
+    db.collection('movies_collection').find({    comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {
         console.log(result)
         if (err) throw err;
         console.log('comment in DB');
