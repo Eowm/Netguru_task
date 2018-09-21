@@ -25,7 +25,6 @@ MongoClient.connect('mongodb://localhost:27017', (err, client) => {
 });
 
 app.post('/movies', (req, res) => {
-    console.log(req.body.title);
     if (!req.body.title) {
         throw new Error("no title given"); // Express will catch this on its own.
     }
@@ -34,7 +33,7 @@ app.post('/movies', (req, res) => {
         uri: URL,
         qs: {
             apikey: API_KEY,
-            t: req.body.title // -> uri + '?access_token=xxxxx%20xxxxx'
+            t: req.body.title
         },
         json: true // Automatically parses the JSON string in the response
     };
@@ -47,10 +46,10 @@ app.post('/movies', (req, res) => {
             }).toArray((err, result) => {
                 if (err) throw err;
                 if (result.length === 0) {
-                    console.log("Pusto! Mozna dodac")
+                    console.log("Empty!  Can Add")
                     repos.comments = [];
                     db.collection('movies_collection').insertOne(repos);
-                } else console.log("Juz jest...")
+                } else console.log("Already exists...")
             });
             res.send(repos);
         })
@@ -108,9 +107,7 @@ app.get('/comments', (req, res) => {
         Title: 1
     };
     db.collection('movies_collection').find({    comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {
-        console.log(result)
         if (err) throw err;
-        console.log('comment in DB');
         res.send(result);
     })
 })
