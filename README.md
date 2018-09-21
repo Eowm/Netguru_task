@@ -1,6 +1,6 @@
 # Netguru_task
 
-##Task
+## Task
 
 Simple REST API,  a basic movie database interacting with external API.
 
@@ -19,7 +19,7 @@ I used package.json.
 The project was created based on JavaScript(ES6), Express.js, Node.js, MongoDb.
 
 
-
+## USAGE
 Comments are added to collection movies_collection at the very bottom, I think there was no need to create another collections only for comments.
 
 To start the app, you need to pull it. After that connect to it via e.g. Postman. In Postman on Post method for http://localhost:3000/movies in header set content-type as application/json, and in body create object with Name. I have choosen name instead of id because in my App Name is unique when you push Send request will be visible below with full body of the movie. In Get of /movies there is no need to do anything, just set as before in header content-type to application/json and send, you will see all of the movies in the DB alphabetically.
