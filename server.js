@@ -4,7 +4,7 @@ var request = require('request-promise-native');
 
 var mongodb = require('mongodb');
 var MongoClient = mongodb.MongoClient;
-var MONGO_URL = 'mongodb://localhost/Movies';
+var MONGO_URL = 'mongodb://Netguru:netguru1@ds263642.mlab.com:63642/netguru_task';
 
 const API_KEY = 'b83010ce';
 const URL = 'http://www.omdbapi.com/';
@@ -96,8 +96,7 @@ app.post('/comments', (req, res) => {
             db.collection('movies_collection').replaceOne({
                 Title: {
                     $in: [req.body.title]
-                }
-            }, { ...result[0] }
+                }}, { ...result[0] }
             );
             db.collection('comments').insertOne({Title: req.body.title, comment: req.body.comment, date: Date.now()}); ///
         }
@@ -108,12 +107,7 @@ app.get('/comments', (req, res) => {
     var mysort = {
         Title: 1
     };
-   /* db.collection('comments').find().sort(mysort).toArray((err, result) => {////
-        if (err) throw err;
-        console.log('comment in DB');
-        res.send(result);
-    })*/
-    db.collection('movies_collection').find({ comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {////
+    db.collection('movies_collection').find({    comments: { $exists: true, $not: {$size: 0} }}).sort(mysort).toArray((err, result) => {////
         console.log(result)
         if (err) throw err;
         console.log('comment in DB');
